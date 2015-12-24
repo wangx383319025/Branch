@@ -1,0 +1,75 @@
+学习笔记
+
+git
+
+git add fileName
+git status                 //查看文件状态
+git commit -m "log"
+git log
+git log --pretty=oneline  //log显示在一行上
+git reset -hard HEAD^      //代码回滚至上一版本
+git reset -hard HEAD^^     //代码回滚至上两个版本
+git reset -hard HEAD~100   //代码回滚至上100 个版本
+
+
+===========================================
+cut -d : -f 1,3 passed //使用cut分割，限界符为：，打印第1和第3列内容
+
+set -x  //打开跟踪功能
+        //被执行的命令会在前面加上一个‘+’号，后面接一个空格
+set +x  //关闭跟踪功能
+
+stty -echo   //关闭自动打印输入字符的功能
+stty echo    //打开自动打印输入字符的功能
+
+============================================
+awk编程
+cat /etc/passwd  |awk -F: '{if(NR==3){print int($1)}}'     //打印第三行第一列数据并强转成int型，
+NR代表行，NF代表列，都是awk的常量
+&0代表整行数据
+
+cat file| awk '$0~/10.1.1.1 {print $0}}'  //  匹配10.1.1.1 并打印  ！~表示不匹配
+
+
+=============================================
+grep -n 'word'  file ->筛选结果中会追加上行号
+grep -c 'word'  file ->显示筛选数目
+grep -c 'word'  file ->显示筛选数目
+
+=============================================
+read -p "message" name #=>输出message 并将用户输入字符保存至name
+=============================================
+nl  显示当前文件并标明序号
+tee 指令会从标准输入设备读取数据，将其内容输出到标准输出设备，同时保存成文件 who | tee who.out
+==============================================
+$#  变量个数
+$*  全部变量
+$?  上一命令的执行结果
+$0  当前脚本的名称
+===============================================
+acl (访问控制列表)
+1、设置文件权限：
+setfacl -m u:user1:rw file.txt
+
+2、查看文件权限
+getfacl file.txt
+
+3、删除文件权限：
+setfacl -x user:user1 file.txt
+
+4、清空文件权限：
+setfacl -b file.txt
+
+5、修改目录权限
+setfacl -m u:user1:rwx /mnt
+
+6、递归修改目录中文件权限
+setfacl -m u:use1:rwx -R /mnt
+
+7、后续在目录中新追加文件时，如何依然保持/继承之前的权限
+setfacl -m d:u:use1:rwx -R /mnt
+
+8、设置用户对命令的执行权限：visudo
+  a.visudo
+     user1 localhost=/user/sbin/useradd
+     user1 ALL=NOPASSWD:/user/sbin/useradd
